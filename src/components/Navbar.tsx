@@ -40,8 +40,10 @@ export default function DrawerAppBar(props: Props) {
   const [navItems, setNavItems] = React.useState(initialNavItems);
 
   useEffect(() => {
-    if (error) {
-      dispatch(logout());
+    if (error && !isLoading) {
+      console.log("Error status:", error);
+    }
+    if (!user && !isLoading) {
       toast.info(
         "An error occurred while trying to log you in, please try again ",
         {
@@ -54,7 +56,8 @@ export default function DrawerAppBar(props: Props) {
           theme: "colored",
         }
       );
-    } else if (user) {
+    }
+    if (user) {
       console.log(user);
       dispatch(login(user));
       setNavItems(adminNavItems);
@@ -62,7 +65,18 @@ export default function DrawerAppBar(props: Props) {
       dispatch(logout());
       setNavItems(initialNavItems);
     }
-  }, [user, dispatch, error]);
+  }, [user, dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      dispatch(login(user));
+      setNavItems(adminNavItems);
+    } else {
+      dispatch(logout());
+      setNavItems(initialNavItems);
+    }
+  }, [user, dispatch]);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
