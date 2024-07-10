@@ -17,4 +17,5 @@ const eventSlice = createSlice({
 });
 
 export const { setEvents } = eventSlice.actions;
+
 export default eventSlice.reducer;
