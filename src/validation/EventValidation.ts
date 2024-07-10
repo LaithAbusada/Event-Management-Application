@@ -8,10 +8,10 @@ export const validationSchema = Yup.object().shape({
     .required(ValidationMessages.NAME_REQUIRED),
   location: Yup.string()
     .min(4, ValidationMessages.LOCATION_SHORT)
-    .max(200, ValidationMessages.LOCATION_LONG)
+    .max(100, ValidationMessages.LOCATION_LONG)
     .required(ValidationMessages.LOCATION_REQUIRED),
   description: Yup.string()
     .min(20, ValidationMessages.DESCRIPTION_SHORT)
-    .max(500, ValidationMessages.DESCRIPTION_LONG)
+    .max(250, ValidationMessages.DESCRIPTION_LONG)
     .required(ValidationMessages.DESCRIPTION_REQUIRED),
 });
