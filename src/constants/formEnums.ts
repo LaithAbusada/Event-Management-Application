@@ -11,6 +11,11 @@ export const ValidationMessages = {
   DESCRIPTION_SHORT:
     "Event description is too short! It should be at least 20 characters long.",
   DESCRIPTION_LONG:
-    "Event description is too long! It should be at most 500 characters long.",
+    "Event description is too long! It should be at most 250 characters long.",
   DESCRIPTION_REQUIRED: "Event description is required.",
+  EMAIL_REQUIRED: "Email Address is required",
+  PHONE_REQUIRED: "Phone Number is required",
+  EMAIL_INVALID: "Please enter a valid email address",
+  PHONE_INVALID: "Please enter a valid phone number",
+  GENDER_REQUIRED: "Gender is required",
 };

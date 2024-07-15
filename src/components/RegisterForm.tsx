@@ -1,57 +1,39 @@
 import * as React from "react";
 import { Formik, FormikHelpers, Form, Field } from "formik";
-import * as Yup from "yup";
 import { useState } from "react";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "next/router";
 import { addEvent } from "@/lib/firebase/firestore";
-import { Timestamp } from "firebase/firestore";
-import { uploadImage } from "@/lib/firebase/storage";
 import { toast } from "react-toastify";
-import { ValidationMessages } from "@/constants/formEnums";
-import { MyFormValues } from "@/interfaces/EventInterface";
+import { RegisterFormValues } from "@/interfaces/EventInterface";
 import { validationSchema } from "@/validation/EventValidation";
 
-function Index() {
-  const initialValues: MyFormValues = {
-    name: "",
-    location: "",
-    description: "",
-  };
-
-  const [date, setDate] = useState<Date | null>(null);
-  const [image, setImage] = useState<File | null>(null);
-  const [video, setVideo] = useState<File | null>(null);
+interface RegisterFormProps {
+  id: string;
+}
+function RegisterForm(props: RegisterFormProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
-    if (e.target.id === "image") {
-      setImage(file);
-    } else if (e.target.id === "video") {
-      setVideo(file);
-    }
+  const initialValues: RegisterFormValues = {
+    name: "",
+    gender: "",
+    email: "",
+    phone: "",
   };
+  const { id } = props;
+
   const handleSubmit = async (
-    values: MyFormValues,
-    actions: FormikHelpers<MyFormValues>
+    values: RegisterFormValues,
+    actions: FormikHelpers<RegisterFormValues>
   ) => {
     actions.setSubmitting(false);
     setLoading(true);
-    const myTimestamp = date ? Timestamp?.fromDate(date) : null;
     try {
-      const imageUrl = image && (await uploadImage(image));
       const data = {
         ...values,
-        image: imageUrl,
-        date: myTimestamp,
       };
-      await addEvent(data);
-      toast.success("A new event has been added successfully ! ", {
+
+      //await registerEvent(data,id);
+      toast.success("You have registered successfully!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -62,7 +44,7 @@ function Index() {
       });
     } catch {
       toast.error(
-        "There was an error adding your event, please try again later",
+        "There was an error with your registration, please try again later",
         {
           position: "top-right",
           autoClose: 5000,
@@ -75,14 +57,12 @@ function Index() {
       );
     }
     setLoading(false);
-    router.push("/dashboard");
+    router.push("/");
   };
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
-          Add a new event
-        </h1>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
@@ -96,14 +76,14 @@ function Index() {
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Event Name
-                  </label>{" "}
+                    Name
+                  </label>
                   <Field
                     type="text"
                     name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Event Name"
+                    placeholder="Enter your name"
                   />
                   {errors.name && touched.name ? (
                     <div className="text-red-600">{errors.name}</div>
@@ -111,98 +91,60 @@ function Index() {
                 </div>
                 <div className="w-full">
                   <label
-                    htmlFor="location"
+                    htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Location
+                    Email
+                  </label>
+                  <Field
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Enter your email"
+                  />
+                  {errors.email && touched.email ? (
+                    <div className="text-red-600">{errors.email}</div>
+                  ) : null}
+                </div>
+                <div className="w-full">
+                  <label
+                    htmlFor="phone"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Phone
                   </label>
                   <Field
                     type="text"
-                    name="location"
-                    id="location"
+                    name="phone"
+                    id="phone"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Event Location"
+                    placeholder="Enter your phone number"
                   />
-                  {errors.location && touched.location ? (
-                    <div className="text-red-600">{errors.location}</div>
+                  {errors.phone && touched.phone ? (
+                    <div className="text-red-600">{errors.phone}</div>
                   ) : null}
                 </div>
                 <div className="w-full">
                   <label
-                    htmlFor="date"
+                    htmlFor="gender"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Date & Time
-                  </label>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      disablePast
-                      views={[
-                        "year",
-                        "month",
-                        "day",
-                        "hours",
-                        "minutes",
-                        "seconds",
-                      ]}
-                      slotProps={{
-                        textField: {
-                          required: true,
-                        },
-                      }}
-                      onChange={(date: Date | null) => setDate(date)}
-                    />
-                  </LocalizationProvider>
-                </div>
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="description"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Event Description
+                    Gender
                   </label>
                   <Field
-                    as="textarea"
-                    rows={5}
-                    name="description"
-                    id="description"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Your description here"
-                  />
-                  {errors.description && touched.description ? (
-                    <div className="text-red-600">{errors.description}</div>
+                    as="select"
+                    name="gender"
+                    id="gender"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  >
+                    <option value="">Select your gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </Field>
+                  {errors.gender && touched.gender ? (
+                    <div className="text-red-600">{errors.gender}</div>
                   ) : null}
-                </div>
-                <div className="w-full">
-                  <label
-                    htmlFor="image"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Image
-                  </label>
-                  <Field
-                    id="image"
-                    name="image"
-                    type="file"
-                    accept="image/*"
-                    required
-                    onChange={onChange}
-                  />
-                </div>
-                <div className="w-full">
-                  <label
-                    htmlFor="video"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Video (Optional)
-                  </label>
-                  <Field
-                    id="video"
-                    name="video"
-                    type="file"
-                    accept="video/*"
-                    onChange={onChange}
-                  />
                 </div>
                 <div className="sm:col-span-2 flex justify-center mt-10">
                   <button
@@ -232,7 +174,7 @@ function Index() {
                         Loading...
                       </>
                     ) : (
-                      "Add Event"
+                      "Register Now"
                     )}
                   </button>
                 </div>
@@ -245,4 +187,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default RegisterForm;

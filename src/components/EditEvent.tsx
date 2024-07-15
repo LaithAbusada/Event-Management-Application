@@ -33,6 +33,7 @@ function EditEvent(props: EditEventProps) {
   const [image, setImage] = useState<File | null>(null);
   const [video, setVideo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [submitDisabled, isSubmitDisabled] = useState(true);
   const router = useRouter();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

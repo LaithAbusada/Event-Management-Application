@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import { ValidationMessages } from "@/constants/formEnums";
+const phoneRegExp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
 
 export const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -14,4 +15,12 @@ export const validationSchema = Yup.object().shape({
     .min(20, ValidationMessages.DESCRIPTION_SHORT)
     .max(250, ValidationMessages.DESCRIPTION_LONG)
     .required(ValidationMessages.DESCRIPTION_REQUIRED),
+  email: Yup.string()
+    .email(ValidationMessages.EMAIL_INVALID)
+    .required(ValidationMessages.EMAIL_REQUIRED),
+
+  phone: Yup.string()
+    .matches(phoneRegExp, ValidationMessages.PHONE_INVALID)
+    .required(ValidationMessages.PHONE_REQUIRED),
+  gender: Yup.string().required(ValidationMessages.GENDER_REQUIRED),
 });

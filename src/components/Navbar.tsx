@@ -38,6 +38,7 @@ export default function DrawerAppBar(props: Props) {
   const userAuth = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const { user, error, isLoading } = useUser();
+  console.log(user);
   const [navItems, setNavItems] = React.useState(initialNavItems);
   useDataListener();
   useEffect(() => {
