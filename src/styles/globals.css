@@ -1,3 +1,84 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+ul.react-paginate {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+ul.react-paginate li a {
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ul.react-paginate li a:hover {
+  background-color: #e5e7eb;
+}
+
+ul.react-paginate li.previous a,
+ul.react-paginate li.next a,
+ul.react-paginate li.break a {
+  border-color: transparent;
+}
+
+ul.react-paginate li.selected a {
+  background-color: #3b82f6;
+  border-color: transparent;
+  color: white;
+  min-width: 2rem;
+}
+
+ul.react-paginate li.disabled a {
+  color: #9ca3af;
+}
+
+ul.react-paginate li.disable,
+ul.react-paginate li.disabled a {
+  cursor: not-allowed;
+}
+
+ul.react-paginate li.previous,
+ul.react-paginate li.next {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .smallScreen {
+    width: max-content;
+  }
+  ul.react-paginate {
+    padding: 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  ul.react-paginate li a {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  ul.react-paginate li.previous a,
+  ul.react-paginate li.next a {
+    padding: 0.25rem 0.5rem;
+  }
+
+  ul.react-paginate li.selected a {
+    min-width: unset;
+    padding: 0.25rem 0.5rem;
+  }
+}

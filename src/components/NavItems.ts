@@ -3,8 +3,10 @@ export const initialNavItems = [
   { name: "Admin Login", path: "/api/auth/login" },
   { name: "Contact", path: "/contact" },
 ];
+//when no admin logged in, regular user(no admin)
 export const adminNavItems = [
   { name: "Home", path: "/" },
   { name: "Admin Logout", path: "/api/auth/logout" },
   { name: "Dashboard", path: "/dashboard" },
 ];
+// when admin logged in, adminNavitems will appear on navbar

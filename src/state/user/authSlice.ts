@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { pick } from "lodash";
-import { UserState, User } from "./interfaces";
+import { UserState, User } from "@/interfaces/UserInterface";
 
 const initialState: UserState = {
   isAuthenticated: false,

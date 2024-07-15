@@ -22,6 +22,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { adminNavItems } from "./NavItems";
 import { initialNavItems } from "./NavItems";
+import useDataListener from "@/lib/firebase/dataListener";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -37,8 +38,9 @@ export default function DrawerAppBar(props: Props) {
   const userAuth = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const { user, error, isLoading } = useUser();
+  console.log(user);
   const [navItems, setNavItems] = React.useState(initialNavItems);
-
+  useDataListener();
   useEffect(() => {
     if (error && !isLoading) {
       console.log("Error status:", error);
@@ -58,7 +60,6 @@ export default function DrawerAppBar(props: Props) {
       );
     }
     if (user) {
-      console.log(user);
       dispatch(login(user));
       setNavItems(adminNavItems);
     } else {
@@ -69,7 +70,6 @@ export default function DrawerAppBar(props: Props) {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
       dispatch(login(user));
       setNavItems(adminNavItems);
     } else {
