@@ -61,3 +61,21 @@ export async function addAttendee(attendee: Attendee) {
   const attendeeRef = doc(db, path, attendee.email);
   await setDoc(attendeeRef, { ...attendee });
 }
+
+export async function getAttendees(eventID: string) {
+  const path = `events/${eventID}/attendees`;
+  const attendeesRef = collection(db, path);
+  const attendees = await getDocs(attendeesRef);
+  return attendees.docs.map((doc) => doc.data() as Attendee);
+}
+
+export async function getEventById(eventID: string) {
+  const eventRef = doc(db, "events", eventID);
+  const event = await getDoc(eventRef);
+  if (event.exists()) {
+    return event.data() as Event;
+  } else {
+    console.log("error here");
+    throw new Error("Event not found");
+  }
+}
