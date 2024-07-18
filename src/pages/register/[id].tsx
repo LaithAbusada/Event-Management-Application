@@ -2,9 +2,9 @@ import { RootState } from "@/state/store";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Event } from "@/interfaces/EventInterface";
 import EventCard from "@/components/EventCard";
 import RegisterForm from "@/components/RegisterForm";
+import { Event } from "@/interfaces/interfaces";
 
 function Register() {
   const [event, setEvent] = useState<Event | null>(null);
@@ -14,7 +14,9 @@ function Register() {
 
   useEffect(() => {
     if (data && id) {
-      const event = data.find((element) => element.id === id);
+      const event = data.find(
+        (element: { id: string | string[] }) => element.id === id
+      );
       if (event) {
         setEvent(event);
       }

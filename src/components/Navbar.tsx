@@ -23,6 +23,8 @@ import { toast } from "react-toastify";
 import { adminNavItems } from "./NavItems";
 import { initialNavItems } from "./NavItems";
 import useDataListener from "@/lib/firebase/dataListener";
+import log from "loglevel";
+
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -40,6 +42,7 @@ export default function DrawerAppBar(props: Props) {
   const { user, error, isLoading } = useUser();
   console.log(user);
   const [navItems, setNavItems] = React.useState(initialNavItems);
+
   useDataListener();
   useEffect(() => {
     if (error && !isLoading) {

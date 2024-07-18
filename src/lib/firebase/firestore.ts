@@ -14,8 +14,10 @@ import {
   addDoc,
   getFirestore,
   deleteDoc,
+  setDoc,
 } from "firebase/firestore";
 import { Event } from "@/interfaces/EventInterface";
+import { Attendee } from "@/interfaces/UserInterface";
 export async function addEvent(data: Object) {
   try {
     const myCollection = collection(db, "events");
@@ -51,5 +53,28 @@ export async function updateEvent(values: Partial<Event>) {
   if (values.id) {
     const eventRef = doc(db, "events", values.id);
     await updateDoc(eventRef, { ...values });
+  }
+}
+
+export async function addAttendee(attendee: Attendee) {
+  const path = `events/${attendee.eventID}/attendees`;
+  const attendeeRef = doc(db, path, attendee.email);
+  await setDoc(attendeeRef, { ...attendee });
+}
+
+export async function getAttendees(eventID: string) {
+  const path = `events/${eventID}/attendees`;
+  const attendeesRef = collection(db, path);
+  const attendees = await getDocs(attendeesRef);
+  return attendees.docs.map((doc) => doc.data() as Attendee);
+}
+
+export async function getEventById(eventID: string) {
+  const eventRef = doc(db, "events", eventID);
+  const event = await getDoc(eventRef);
+  if (event.exists()) {
+    return event.data() as Event;
+  } else {
+    throw new Error("Event not found");
   }
 }
