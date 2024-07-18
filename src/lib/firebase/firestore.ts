@@ -75,7 +75,6 @@ export async function getEventById(eventID: string) {
   if (event.exists()) {
     return event.data() as Event;
   } else {
-    console.log("error here");
     throw new Error("Event not found");
   }
 }

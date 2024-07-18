@@ -10,6 +10,8 @@ import FormField from "./FormField";
 import SubmitButton from "./SubmitButton";
 import { Attendee } from "@/interfaces/UserInterface";
 import { showToast } from "@/helpers/toast";
+import { TOAST_TYPES } from "@/constants/toastEnums";
+import { v4 as uuidv4 } from "uuid";
 
 interface RegisterFormProps {
   id: string;
@@ -35,14 +37,14 @@ function RegisterForm(props: RegisterFormProps) {
       const data: Attendee = {
         eventID: id,
         ...values,
+        id: uuidv4(),
       };
-      console.log(data);
+
       await addAttendee(data);
-      showToast("success", "You have registered successfully!");
+      showToast(TOAST_TYPES.SUCCESS, "You have registered successfully!");
     } catch (error) {
-      console.log(error);
       showToast(
-        "error",
+        TOAST_TYPES.ERROR,
         "There was an error with your registration, please try again later"
       );
     }

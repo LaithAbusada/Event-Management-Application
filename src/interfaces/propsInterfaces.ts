@@ -42,3 +42,15 @@ export interface EventListProps {
   events: Event[];
   withEdit: boolean;
 }
+
+export interface FormFieldProps {
+  type?: string;
+  id: string;
+  name: string;
+  placeholder?: string;
+  rows?: number;
+  as?: string;
+  label?: string;
+  required?: boolean;
+  FormChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}

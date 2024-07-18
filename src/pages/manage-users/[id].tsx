@@ -6,12 +6,12 @@ import { Attendee } from "@/interfaces/UserInterface";
 
 function ManageUsers({
   attendees,
-  name,
+  eventName,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <h1 className="text-4xl font-bold text-center text-indigo-600 mb-8">
-        {name ? name : "There was an error fetching this event"}
+        {eventName ? eventName : "There was an error fetching this event data"}
       </h1>
       {attendees ? (
         <AttendeeList attendees={attendees} />
@@ -30,16 +30,16 @@ export const getServerSideProps = (async (context) => {
   try {
     const attendees = await getAttendees(id);
     const event = await getEventById(id);
-    const { name } = event;
+    const { name: eventName } = event;
 
-    return { props: { attendees, name } };
+    return { props: { attendees, eventName } };
   } catch (error) {
-    console.error("Error fetching data:", error);
-    return { props: { attendees: [], name: "" } };
+    console.log("error");
+    return { props: { attendees: null, eventName: "" } };
   }
 }) satisfies GetServerSideProps<{
-  attendees: Attendee[];
-  name: string;
+  attendees: Attendee[] | null;
+  eventName: string;
 }>;
 
 export default ManageUsers;

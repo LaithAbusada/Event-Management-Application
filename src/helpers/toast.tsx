@@ -1,3 +1,4 @@
+import { TOAST_TYPES } from "@/constants/toastEnums";
 import { ToastOptions, toast } from "react-toastify";
 
 export const showToast = (type: string, message: string) => {
@@ -12,16 +13,16 @@ export const showToast = (type: string, message: string) => {
   };
 
   switch (type) {
-    case "success":
+    case TOAST_TYPES.SUCCESS:
       toast.success(message, options);
       break;
-    case "info":
+    case TOAST_TYPES.INFO:
       toast.info(message, options);
       break;
-    case "warn":
+    case TOAST_TYPES.WARN:
       toast.warn(message, options);
       break;
-    case "error":
+    case TOAST_TYPES.ERROR:
       toast.error(message, options);
       break;
     default:

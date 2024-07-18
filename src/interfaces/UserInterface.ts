@@ -16,12 +16,9 @@ export interface Attendee {
   email: string;
   phone: string;
   gender: string;
+  id: string;
 }
 
 export interface AttendeesData {
   attendees: Attendee[];
-}
-
-export interface RegisterFormProps {
-  id: string;
 }
