@@ -1,6 +1,6 @@
 import { ButtonProps } from "@/interfaces/interfaces";
 import React from "react";
-import LoadingIcon from "../../public/icons/Loading";
+import Loading from "../../public/icons/Loading.svg";
 
 const SubmitButton = ({ loading, message }: ButtonProps) => {
   return (
@@ -11,7 +11,7 @@ const SubmitButton = ({ loading, message }: ButtonProps) => {
     >
       {loading ? (
         <>
-          <LoadingIcon />
+          <Loading className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" />
           Loading...
         </>
       ) : (
