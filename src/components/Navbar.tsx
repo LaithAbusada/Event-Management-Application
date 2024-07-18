@@ -42,7 +42,7 @@ export default function DrawerAppBar(props: Props) {
   const { user, error, isLoading } = useUser();
   console.log(user);
   const [navItems, setNavItems] = React.useState(initialNavItems);
-  log.warn("Laith");
+
   useDataListener();
   useEffect(() => {
     if (error && !isLoading) {
