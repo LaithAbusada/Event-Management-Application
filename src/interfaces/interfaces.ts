@@ -1,5 +1,32 @@
-import { Event } from "@/interfaces/EventInterface";
-import { Attendee } from "./UserInterface";
+import { Timestamp } from "firebase/firestore";
+// Event Interfaces
+export interface MyFormValues {
+  name: string;
+  location: string;
+  description: string;
+}
+
+export interface Event {
+  id: string;
+  location: string;
+  name: string;
+  date: Timestamp;
+  image: string;
+  description: string;
+}
+
+export interface EventState {
+  data: Event[] | null;
+}
+
+export interface RegisterFormValues {
+  name: string;
+  gender: string;
+  phone: string;
+  email: string;
+}
+
+// component props Interfaces
 
 export interface AlertProps {
   id: string;
@@ -53,4 +80,27 @@ export interface FormFieldProps {
   label?: string;
   required?: boolean;
   FormChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+// user Interfaces
+
+export interface User {
+  email: string;
+  name: string;
+  nickname: string;
+  sid: string; // session id
+}
+
+export interface UserState {
+  isAuthenticated: boolean;
+  user: User | null;
+}
+
+export interface Attendee {
+  eventID: string;
+  name: string;
+  email: string;
+  phone: string;
+  gender: string;
+  id: string;
 }

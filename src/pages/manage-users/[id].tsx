@@ -2,7 +2,7 @@ import React from "react";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { getAttendees, getEventById } from "@/lib/firebase/firestore";
 import AttendeeList from "@/components/AttendeeList";
-import { Attendee } from "@/interfaces/UserInterface";
+import { Attendee } from "@/interfaces/interfaces";
 
 function ManageUsers({
   attendees,

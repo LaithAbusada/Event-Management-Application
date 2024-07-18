@@ -1,4 +1,4 @@
-import { ButtonProps } from "@/interfaces/propsInterfaces";
+import { ButtonProps } from "@/interfaces/interfaces";
 import React from "react";
 import LoadingIcon from "../../public/icons/Loading";
 

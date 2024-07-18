@@ -4,18 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { addAttendee, addEvent } from "@/lib/firebase/firestore";
 import { toast } from "react-toastify";
-import { RegisterFormValues } from "@/interfaces/EventInterface";
+import { RegisterFormProps, RegisterFormValues } from "@/interfaces/interfaces";
 import { RegisterSchema, validationSchema } from "@/validation/EventValidation";
 import FormField from "./FormField";
 import SubmitButton from "./SubmitButton";
-import { Attendee } from "@/interfaces/UserInterface";
+import { Attendee } from "@/interfaces/interfaces";
 import { showToast } from "@/helpers/toast";
 import { TOAST_TYPES } from "@/constants/toastEnums";
 import { v4 as uuidv4 } from "uuid";
+import log from "loglevel";
 
-interface RegisterFormProps {
-  id: string;
-}
 function RegisterForm(props: RegisterFormProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -39,10 +37,11 @@ function RegisterForm(props: RegisterFormProps) {
         ...values,
         id: uuidv4(),
       };
-
+      log.info(data);
       await addAttendee(data);
       showToast(TOAST_TYPES.SUCCESS, "You have registered successfully!");
     } catch (error) {
+      log.error("An error has occured with registration");
       showToast(
         TOAST_TYPES.ERROR,
         "There was an error with your registration, please try again later"
