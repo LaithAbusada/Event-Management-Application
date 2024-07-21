@@ -24,6 +24,8 @@ import { adminNavItems } from "./NavItems";
 import { initialNavItems } from "./NavItems";
 import useDataListener from "@/lib/firebase/dataListener";
 import log from "loglevel";
+import { showToast } from "@/helpers/toast";
+import { TOAST_TYPES } from "@/constants/toastEnums";
 
 interface Props {
   /**
@@ -49,17 +51,9 @@ export default function DrawerAppBar(props: Props) {
       console.log("Error status:", error);
     }
     if (!user && !isLoading) {
-      toast.info(
-        "An error occurred while trying to log you in, please try again ",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-        }
+      showToast(
+        TOAST_TYPES.ERROR,
+        "An error occurred while trying to log you in, please try again "
       );
     }
     if (user) {
@@ -123,7 +117,7 @@ export default function DrawerAppBar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="h5"
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
