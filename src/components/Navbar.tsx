@@ -87,8 +87,8 @@ export default function DrawerAppBar(props: Props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Eventco
+      <Typography variant="h1" sx={{ my: 2, fontSize: 20 }}>
+        Event Management Application
       </Typography>
       <Divider />
       <List>
@@ -123,11 +123,15 @@ export default function DrawerAppBar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="h1"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+              fontSize: 20,
+            }}
           >
-            Eventco
+            Event Management Application
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
