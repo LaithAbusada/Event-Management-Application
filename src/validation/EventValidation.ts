@@ -15,10 +15,16 @@ export const validationSchema = Yup.object().shape({
     .min(20, ValidationMessages.DESCRIPTION_SHORT)
     .max(250, ValidationMessages.DESCRIPTION_LONG)
     .required(ValidationMessages.DESCRIPTION_REQUIRED),
+});
+
+export const RegisterSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, ValidationMessages.NAME_SHORT)
+    .max(50, ValidationMessages.NAME_LONG)
+    .required(ValidationMessages.NAME_REQUIRED),
   email: Yup.string()
     .email(ValidationMessages.EMAIL_INVALID)
     .required(ValidationMessages.EMAIL_REQUIRED),
-
   phone: Yup.string()
     .matches(phoneRegExp, ValidationMessages.PHONE_INVALID)
     .required(ValidationMessages.PHONE_REQUIRED),
