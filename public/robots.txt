@@ -1,0 +1,12 @@
+//robots.txt
+
+# Block all crawlers for /dashboard
+User-agent: *
+Disallow: /dashboard
+Disallow: /edit-event
+Disallow: /manage-users
+Disallow: /add-event
+
+# Allow all crawlers
+User-agent: *
+Allow: /
