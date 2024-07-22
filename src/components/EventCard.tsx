@@ -4,7 +4,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Tooltip } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Event } from "@/interfaces/EventInterface";
 import { Timestamp } from "firebase/firestore";
 import { format } from "path";
 import AlertDialog from "./AlertDialog";
@@ -12,8 +11,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import LocationOn from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { EventProps } from "@/interfaces/propsInterfaces";
 import { formatDate, getTime } from "@/utils/formatDate";
+import { EventProps } from "@/interfaces/interfaces";
 // todo Implement onlclick for register now
 
 function EventCard(props: EventProps) {
@@ -32,9 +31,9 @@ function EventCard(props: EventProps) {
       }}
     >
       <div className="bg-black  bg-opacity-20 min-h- px-10 flex flex-wrap flex-col pt-60 hover:bg-opacity-75 transform duration-300">
-        <h1 className="text-white text-3xl mb-5 transform translate-y-10 group-hover:-translate-y-40 duration-300">
+        <h2 className="text-white text-3xl mb-5 transform translate-y-10 group-hover:-translate-y-40 duration-300">
           {event.name}
-        </h1>
+        </h2>
         <div className="w-16 h-2 bg-yellow-500 rounded-full mb-5 transform translate-y-10 group-hover:-translate-y-40 duration-300"></div>
 
         <div className="mb-5 h-30 min-h-full overflow-hidden opacity-0 text-white text-xl group-hover:opacity-80 transform duration-500 group-hover:-translate-y-40 ">
