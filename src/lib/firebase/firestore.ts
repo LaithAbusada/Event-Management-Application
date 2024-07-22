@@ -1,3 +1,4 @@
+import { Attendee, Event } from "@/interfaces/interfaces";
 import { db } from "@/lib/firebase/clientApp";
 import {
   collection,
@@ -16,8 +17,6 @@ import {
   deleteDoc,
   setDoc,
 } from "firebase/firestore";
-import { Event } from "@/interfaces/EventInterface";
-import { Attendee } from "@/interfaces/UserInterface";
 export async function addEvent(data: Object) {
   try {
     const myCollection = collection(db, "events");
