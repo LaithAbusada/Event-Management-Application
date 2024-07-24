@@ -41,7 +41,6 @@ function EventForm({ event }: EventFormProps) {
       });
       const d = new Date(event.date);
       setDate(d);
-      console.log(d);
     }
   }, [event]);
 
@@ -72,8 +71,7 @@ function EventForm({ event }: EventFormProps) {
       // if there is an event it means we are in edit event
       if (event) {
         const d = new Date(event.date);
-        console.log(date, "laith");
-        console.log(d, "laith2");
+
         const updatedData: Partial<Event> = {};
         if (values.name != initialValues.name) {
           updatedData.name = values.name;
