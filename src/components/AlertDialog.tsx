@@ -9,8 +9,9 @@ import { IconButton, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import { deleteById } from "@/lib/firebase/firestore";
-import { toast } from "react-toastify";
-import { AlertProps } from "@/interfaces/propsInterfaces";
+import { AlertProps } from "@/interfaces/interfaces";
+import { TOAST_TYPES } from "@/constants/toastEnums";
+import { showToast } from "@/helpers/toast";
 
 export default function AlertDialog(props: AlertProps) {
   const [open, setOpen] = useState(false);
@@ -25,32 +26,17 @@ export default function AlertDialog(props: AlertProps) {
 
   async function handleAgree() {
     try {
+      setOpen(false);
       await deleteById(props.id);
-      toast.success("Event Deleted Successfully! ", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      // force page refresh as there is no listener to change the events now, so refresh the page to show the event was successfully deleted
+      window.location.reload();
+      showToast(TOAST_TYPES.SUCCESS, "Event Deleted Successfully! ");
     } catch (e) {
-      console.log(e);
-      toast.error(
-        "There was an error deleting your event, please try again later",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-        }
+      showToast(
+        TOAST_TYPES.ERROR,
+        "There was an error deleting your event, please try again later"
       );
     }
-    setOpen(false);
   }
 
   return (

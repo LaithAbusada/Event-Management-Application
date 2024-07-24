@@ -22,8 +22,9 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { adminNavItems } from "./NavItems";
 import { initialNavItems } from "./NavItems";
-import useDataListener from "@/lib/firebase/dataListener";
 import log from "loglevel";
+import { showToast } from "@/helpers/toast";
+import { TOAST_TYPES } from "@/constants/toastEnums";
 
 interface Props {
   /**
@@ -40,26 +41,16 @@ export default function DrawerAppBar(props: Props) {
   const userAuth = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const { user, error, isLoading } = useUser();
-  console.log(user);
   const [navItems, setNavItems] = React.useState(initialNavItems);
 
-  useDataListener();
   useEffect(() => {
     if (error && !isLoading) {
-      console.log("Error status:", error);
+      log.error("Error status:", error);
     }
     if (!user && !isLoading) {
-      toast.info(
-        "An error occurred while trying to log you in, please try again ",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-        }
+      showToast(
+        TOAST_TYPES.INFO,
+        "An error occurred while trying to log you in, please try again "
       );
     }
     if (user) {
@@ -87,7 +78,7 @@ export default function DrawerAppBar(props: Props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h1" sx={{ my: 2, fontSize: 20 }}>
+      <Typography variant="h1" sx={{ my: 2, fontSize: 30 }}>
         Event Management Application
       </Typography>
       <Divider />

@@ -1,18 +1,8 @@
+import { FormFieldProps } from "@/interfaces/interfaces";
 import { Field } from "formik";
 import React from "react";
 import { PropsWithChildren } from "react";
 
-interface FormFieldProps {
-  type?: string;
-  id: string;
-  name: string;
-  placeholder?: string;
-  rows?: number;
-  as?: string;
-  label?: string;
-  required?: boolean;
-  FormChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
 function FormField({
   type,
   id,
