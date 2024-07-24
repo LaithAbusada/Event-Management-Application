@@ -3,6 +3,7 @@ import { Timestamp } from "firebase/firestore";
 export function formatDate(timestamp: Timestamp) {
   const date = timestamp?.toDate();
   const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
     weekday: "long",
     month: "long",
     day: "numeric",

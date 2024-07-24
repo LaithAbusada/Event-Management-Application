@@ -1,33 +1,51 @@
 import * as React from "react";
 import { Formik, FormikHelpers, Form, Field } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "next/router";
-import { addEvent } from "@/lib/firebase/firestore";
+import { addEvent, updateEvent } from "@/lib/firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { uploadImage } from "@/lib/firebase/storage";
-import { toast } from "react-toastify";
-import { ValidationMessages } from "@/constants/formEnums";
-import { MyFormValues } from "@/interfaces/EventInterface";
+import { showToast } from "@/helpers/toast";
 import { validationSchema } from "@/validation/EventValidation";
+import _ from "lodash";
+import FormField from "./FormField";
+import SubmitButton from "./SubmitButton";
+import { EventFormProps, MyFormValues } from "@/interfaces/interfaces";
+import { Event } from "@/interfaces/interfaces";
+import { TOAST_TYPES } from "@/constants/toastEnums";
 
-function Index() {
-  const initialValues: MyFormValues = {
+function EventForm({ event }: EventFormProps) {
+  const router = useRouter();
+
+  const [initialValues, setInitialValues] = useState<MyFormValues>({
     name: "",
     location: "",
     description: "",
-  };
+  });
 
   const [date, setDate] = useState<Date | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [video, setVideo] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (event) {
+      setInitialValues({
+        name: event.name,
+        location: event.location,
+        description: event.description,
+      });
+      const d = new Date(event.date);
+      setDate(d);
+      console.log(d);
+    }
+  }, [event]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
     if (e.target.id === "image") {
@@ -36,92 +54,110 @@ function Index() {
       setVideo(file);
     }
   };
+
   const handleSubmit = async (
     values: MyFormValues,
     actions: FormikHelpers<MyFormValues>
   ) => {
     actions.setSubmitting(false);
     setLoading(true);
-    const myTimestamp = date ? Timestamp?.fromDate(date) : null;
     try {
-      const imageUrl = image && (await uploadImage(image));
-      const data = {
+      const myTimestamp = date ? Timestamp.fromDate(date) : undefined;
+      const imageUrl = image ? await uploadImage(image) : undefined;
+      const data: Partial<Event> = {
         ...values,
         image: imageUrl,
         date: myTimestamp,
       };
-      await addEvent(data);
-      toast.success("A new event has been added successfully ! ", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
-    } catch {
-      toast.error(
-        "There was an error adding your event, please try again later",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
+      // if there is an event it means we are in edit event
+      if (event) {
+        const d = new Date(event.date);
+        console.log(date, "laith");
+        console.log(d, "laith2");
+        const updatedData: Partial<Event> = {};
+        if (values.name != initialValues.name) {
+          updatedData.name = values.name;
         }
+        if (values.location != initialValues.location) {
+          updatedData.location = values.location;
+        }
+        if (values.description != initialValues.description) {
+          updatedData.description = values.description;
+        }
+
+        if (date?.getMilliseconds() != d.getMilliseconds()) {
+          updatedData.date = myTimestamp;
+        }
+
+        if (imageUrl) {
+          updatedData.image = imageUrl;
+        }
+
+        if (!_.isEmpty(updatedData)) {
+          updatedData.id = event.id;
+          await updateEvent(updatedData);
+          showToast(
+            TOAST_TYPES.SUCCESS,
+            "The event has been edited successfully!"
+          );
+        } else {
+          showToast(
+            TOAST_TYPES.INFO,
+            "No values were changed, redirecting to dashboard"
+          );
+        }
+      } else {
+        //if there is no event it means we are in add event
+        await addEvent(data);
+        showToast(
+          TOAST_TYPES.SUCCESS,
+          "A new event has been added successfully!"
+        );
+      }
+      router.push("/dashboard");
+    } catch (error) {
+      showToast(
+        TOAST_TYPES.ERROR,
+        "There was an error processing your request, please try again later"
       );
     }
     setLoading(false);
-    router.push("/dashboard");
   };
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
-          Add a new event
+          {event ? "Edit Event" : "Add a new event"}
         </h1>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
+          enableReinitialize
         >
           {({ errors, touched }) => (
             <Form>
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div className="sm:col-span-2">
-                  <label
-                    htmlFor="name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Event Name
-                  </label>{" "}
-                  <Field
+                  <FormField
                     type="text"
-                    name="name"
                     id="name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    name="name"
                     placeholder="Type Event Name"
+                    label="Event Name"
                   />
                   {errors.name && touched.name ? (
                     <div className="text-red-600">{errors.name}</div>
                   ) : null}
                 </div>
                 <div className="w-full">
-                  <label
-                    htmlFor="location"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Location
-                  </label>
-                  <Field
+                  <FormField
                     type="text"
                     name="location"
                     id="location"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Event Location"
+                    label="Location"
                   />
                   {errors.location && touched.location ? (
                     <div className="text-red-600">{errors.location}</div>
@@ -137,6 +173,7 @@ function Index() {
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
                       disablePast
+                      value={date}
                       views={[
                         "year",
                         "month",
@@ -155,38 +192,37 @@ function Index() {
                   </LocalizationProvider>
                 </div>
                 <div className="sm:col-span-2">
-                  <label
-                    htmlFor="description"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Event Description
-                  </label>
-                  <Field
+                  <FormField
                     as="textarea"
                     rows={5}
                     name="description"
                     id="description"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Your description here"
+                    label="Description"
                   />
                   {errors.description && touched.description ? (
                     <div className="text-red-600">{errors.description}</div>
                   ) : null}
                 </div>
+                {event && event.image && (
+                  <div className="mb-2 w-full">
+                    <span className="block text-gray-700 dark:text-gray-300">
+                      Current Event Image:
+                    </span>
+                    <img
+                      src={event.image}
+                      alt="Current Event Image"
+                      className="h-20 w-20 object-cover"
+                    />
+                  </div>
+                )}
                 <div className="w-full">
-                  <label
-                    htmlFor="image"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Image
-                  </label>
-                  <Field
+                  <FormField
                     id="image"
                     name="image"
                     type="file"
-                    accept="image/*"
-                    required
-                    onChange={onChange}
+                    FormChange={handleChange}
+                    label={event ? "Upload New Image" : "Upload Image"}
                   />
                 </div>
                 <div className="w-full">
@@ -196,45 +232,13 @@ function Index() {
                   >
                     Video (Optional)
                   </label>
-                  <Field
-                    id="video"
-                    name="video"
-                    type="file"
-                    accept="video/*"
-                    onChange={onChange}
-                  />
+                  <input id="video" name="video" type="file" accept="video/*" />
                 </div>
                 <div className="sm:col-span-2 flex justify-center mt-10">
-                  <button
-                    type="submit"
-                    className="px-40 py-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <>
-                        <svg
-                          aria-hidden="true"
-                          role="status"
-                          className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
-                          viewBox="0 0 100 101"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                            fill="currentColor"
-                          />
-                          <path
-                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                            fill="#1C64F2"
-                          />
-                        </svg>
-                        Loading...
-                      </>
-                    ) : (
-                      "Add Event"
-                    )}
-                  </button>
+                  <SubmitButton
+                    loading={loading}
+                    message={event ? "Edit Event" : "Add Event"}
+                  />
                 </div>
               </div>
             </Form>
@@ -245,4 +249,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default EventForm;

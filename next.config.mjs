@@ -7,8 +7,10 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
-
     return config;
+  },
+  images: {
+    domains: ["firebasestorage.googleapis.com"],
   },
 };
 

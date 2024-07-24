@@ -8,7 +8,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }: AppProps) {
-  console.log({ ...pageProps }, "PAGE PROPS");
   return (
     <Provider store={store}>
       <UserProvider>

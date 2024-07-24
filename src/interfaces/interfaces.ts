@@ -15,6 +15,23 @@ export interface Event {
   description: string;
 }
 
+export interface EventData {
+  id: string;
+  location: string;
+  name: string;
+  date: string;
+  image: string;
+  description: string;
+  time: string;
+}
+export interface editEvent {
+  id: string;
+  location: string;
+  name: string;
+  date: Date;
+  image: string;
+  description: string;
+}
 export interface EventState {
   data: Event[] | null;
 }
@@ -37,7 +54,7 @@ export interface EditEventProps {
 }
 
 export interface EventProps {
-  event: Event;
+  event: EventData;
 }
 
 export interface RegisterFormProps {
@@ -53,7 +70,7 @@ export interface AttendeeListProps {
 }
 
 export interface EventFormProps {
-  event?: Event | null;
+  event?: EventData | null;
 }
 
 export interface RegisterFormProps {
@@ -66,7 +83,7 @@ export interface ButtonProps {
 }
 
 export interface EventListProps {
-  events: Event[];
+  events: EventData[];
   withEdit: boolean;
 }
 
@@ -80,6 +97,12 @@ export interface FormFieldProps {
   label?: string;
   required?: boolean;
   FormChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface InfiniteScrollerProps {
+  events: EventData[];
+  edit: boolean;
+  limit: number;
 }
 
 // user Interfaces

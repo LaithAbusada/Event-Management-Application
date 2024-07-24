@@ -1,28 +1,14 @@
-import { RootState } from "@/state/store";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
+
 import EventCard from "@/components/EventCard";
 import RegisterForm from "@/components/RegisterForm";
-import { Event } from "@/interfaces/interfaces";
+import { EventData } from "@/interfaces/interfaces";
+import { getEventById } from "@/lib/firebase/firestore";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
-function Register() {
-  const [event, setEvent] = useState<Event | null>(null);
-  const data = useSelector((state: RootState) => state.events.data);
-  const router = useRouter();
-  const { id } = router.query;
-
-  useEffect(() => {
-    if (data && id) {
-      const event = data.find(
-        (element: { id: string | string[] }) => element.id === id
-      );
-      if (event) {
-        setEvent(event);
-      }
-    }
-  }, [data, id]);
-
+function Register({
+  event,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   if (!event) {
     return <p>Error fetching event</p>;
   }
@@ -38,4 +24,30 @@ function Register() {
   );
 }
 
+export const getServerSideProps = (async (context) => {
+  const id = context?.params?.id as string;
+  try {
+    const event = await getEventById(id);
+    return {
+      props: {
+        event,
+      },
+    };
+  } catch (error) {
+    const emptyEvent: EventData = {
+      id: "",
+      name: "",
+      date: "",
+      time: "",
+      location: "",
+      image: "",
+      description: "",
+    };
+    return {
+      props: {
+        event: emptyEvent,
+      },
+    };
+  }
+}) satisfies GetServerSideProps<{ event: EventData | {} }>;
 export default Register;
