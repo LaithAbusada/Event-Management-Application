@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { EventData } from "@/interfaces/interfaces";
+import { EventData } from "@/interfaces";
 import EventForm from "@/components/EventForm";
 import { getEditEvent } from "@/lib/firebase/firestore";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -17,7 +17,7 @@ function EditEventId({
   return (
     <>
       {event ? (
-        <EventForm event={event} />
+        <EventForm event={event} withEdit={true} />
       ) : (
         <h2 className="text-center text-red-500 h-screen mt-20 text-2xl font-bold">
           Couldn't find the event you are trying to edit , Please try again

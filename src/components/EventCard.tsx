@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import LocationOn from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { formatDate, getTime } from "@/utils/formatDate";
-import { EventProps } from "@/interfaces/interfaces";
+import { EventProps } from "@/interfaces";
 import Image from "next/image";
 
 function EventCard(props: EventProps) {

@@ -2,7 +2,7 @@ import React from "react";
 
 import EventCard from "@/components/EventCard";
 import RegisterForm from "@/components/RegisterForm";
-import { EventData } from "@/interfaces/interfaces";
+import { EventData } from "@/interfaces";
 import { getEventById } from "@/lib/firebase/firestore";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 

@@ -1,4 +1,4 @@
-import { Attendee, Event, EventData, editEvent } from "@/interfaces/interfaces";
+import { Attendee, Event, EventData, editEvent } from "@/interfaces";
 import { db } from "@/lib/firebase/clientApp";
 import { formatDate, getTime } from "@/utils/formatDate";
 import {

@@ -11,14 +11,14 @@ import { Timestamp } from "firebase/firestore";
 import { uploadImage } from "@/lib/firebase/storage";
 import { showToast } from "@/helpers/toast";
 import { validationSchema } from "@/validation/EventValidation";
-import _ from "lodash";
+import { isEmpty } from "lodash";
 import FormField from "./FormField";
 import SubmitButton from "./SubmitButton";
-import { EventFormProps, MyFormValues } from "@/interfaces/interfaces";
-import { Event } from "@/interfaces/interfaces";
+import { EventFormProps, MyFormValues } from "@/interfaces";
+import { Event } from "@/interfaces";
 import { TOAST_TYPES } from "@/constants/toastEnums";
 
-function EventForm({ event }: EventFormProps) {
+function EventForm({ event, withEdit }: EventFormProps) {
   const router = useRouter();
 
   const [initialValues, setInitialValues] = useState<MyFormValues>({
@@ -68,8 +68,8 @@ function EventForm({ event }: EventFormProps) {
         image: imageUrl,
         date: myTimestamp,
       };
-      // if there is an event it means we are in edit event
-      if (event) {
+      // if withEdit it means we are in editEvent, also have to check for event for typescript error handling
+      if (withEdit && event) {
         const d = new Date(event.date);
 
         const updatedData: Partial<Event> = {};
@@ -91,7 +91,7 @@ function EventForm({ event }: EventFormProps) {
           updatedData.image = imageUrl;
         }
 
-        if (!_.isEmpty(updatedData)) {
+        if (isEmpty(updatedData)) {
           updatedData.id = event.id;
           await updateEvent(updatedData);
           showToast(

@@ -1,5 +1,5 @@
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
-import { InfiniteScrollerProps } from "@/interfaces/interfaces";
+import { InfiniteScrollerProps } from "@/interfaces";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import EventList from "./EventList";
@@ -21,7 +21,12 @@ function InfiniteScroller({ events, edit, limit }: InfiniteScrollerProps) {
           dataLength={loadedEvents.length}
           next={() => fetchMoreData(limit)}
           hasMore={hasMore}
-          loader={<h4 className="text-center">Loading more events...</h4>}
+          loader={
+            <h4 className="text-center mt-5 mb-5 sm:text-xl">
+              Loading more events...
+              <Loading className="inline mr-2 w-6 h-6 text-gray-200 animate-spin dark:text-gray-600" />
+            </h4>
+          }
           endMessage={
             <div className="text-center py-5">
               <p className="text-xl font-bold text-gray-500">

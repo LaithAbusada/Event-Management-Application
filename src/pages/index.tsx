@@ -3,7 +3,7 @@ import EventList from "@/components/EventList";
 import Head from "next/head";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { getEvents } from "@/lib/firebase/firestore";
-import { EventData } from "@/interfaces/interfaces";
+import { EventData } from "@/interfaces";
 import InfinteScroller from "@/components/InfinteScroller";
 
 const Index = ({

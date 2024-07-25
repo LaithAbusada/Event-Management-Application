@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getNextEvents, getSnapshot } from "@/lib/firebase/firestore";
-import { EventData } from "@/interfaces/interfaces";
+import { EventData } from "@/interfaces";
 import { DocumentData, DocumentSnapshot } from "firebase/firestore";
 
 function useInfiniteScroll(initialEvents: EventData[]) {

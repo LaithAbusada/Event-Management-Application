@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import EventList from "@/components/EventList";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { EventData } from "@/interfaces/interfaces";
+import { EventData } from "@/interfaces";
 import { getEvents } from "@/lib/firebase/firestore";
 import InfinteScroller from "@/components/InfinteScroller";
 
