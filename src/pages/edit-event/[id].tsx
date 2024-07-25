@@ -17,7 +17,7 @@ function EditEventId({
   return (
     <>
       {event ? (
-        <EventForm event={event} withEdit={true} />
+        <EventForm event={event} withEdit />
       ) : (
         <h2 className="text-center text-red-500 h-screen mt-20 text-2xl font-bold">
           Couldn't find the event you are trying to edit , Please try again

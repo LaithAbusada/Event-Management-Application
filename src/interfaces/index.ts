@@ -71,7 +71,7 @@ export interface AttendeeListProps {
 
 export interface EventFormProps {
   event?: EventData | null;
-  withEdit: boolean;
+  withEdit?: boolean;
 }
 
 export interface RegisterFormProps {
