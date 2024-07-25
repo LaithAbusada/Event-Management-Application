@@ -1,14 +1,21 @@
 import { RootState } from "@/state/store";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import EventList from "@/components/EventList";
-import Pagination from "@/components/Pagination";
-import usePagination from "@/hooks/usePagination";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { EventData } from "@/interfaces";
+import { getEvents } from "@/lib/firebase/firestore";
+import InfinteScroller from "@/components/InfinteScroller";
 
-function Index() {
-  const { currentItems, handlePageClick, pageCount } = usePagination(3);
-
+function Index({
+  events,
+  limit,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  useEffect(() => {
+    // when user refreshes the page, revert the page scroll back to the top, as sometimes that would cause errors for the infiniteScroller
+    window.history.scrollRestoration = "manual";
+  }, []);
   return (
     <div className="smallScreen">
       <Link href="/add-event">
@@ -20,13 +27,34 @@ function Index() {
         </button>
       </Link>
 
-      <EventList events={currentItems} withEdit={true} />
-
-      {currentItems && (
-        <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+      {events.length > 0 ? (
+        <InfinteScroller events={events} edit={true} limit={limit} />
+      ) : (
+        <div className="flex items-center justify-center h-screen">
+          <h1 className="sm:text-2xl font-bold text-gray-700 m-2">
+            There are no events currently, Stay tuned for future events 🔥
+          </h1>
+        </div>
       )}
     </div>
   );
 }
 
+export const getServerSideProps = (async () => {
+  try {
+    const limit: number = parseInt(process.env.EVENTS_DISPLAYED_LIMIT!);
+    const events = await getEvents(limit);
+    return {
+      props: { events, limit },
+    };
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return {
+      props: { events: [], limit: 0 },
+    };
+  }
+}) satisfies GetServerSideProps<{
+  events: EventData[];
+  limit: number;
+}>;
 export default Index;

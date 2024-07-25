@@ -1,36 +1,68 @@
-import React, { useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import Navbar from "@/components/Navbar";
-import useDataListener from "@/lib/firebase/dataListener";
-import { RootState } from "@/state/store";
-import { useSelector } from "react-redux";
-import Link from "next/link";
+import React, { useEffect } from "react";
 import EventList from "@/components/EventList";
-import Pagination from "@/components/Pagination";
+import Head from "next/head";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import { getEvents } from "@/lib/firebase/firestore";
+import { EventData } from "@/interfaces";
+import InfinteScroller from "@/components/InfinteScroller";
 
-function Index() {
-  const [itemOffset, setItemOffset] = useState(0);
+const Index = ({
+  events,
+  limit,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  useEffect(() => {
+    window.history.scrollRestoration = "manual";
+  }, []);
 
-  const itemsPerPage = 3;
-  const data = useSelector((state: RootState) => state.events.data) || [];
-
-  const endOffset = itemOffset + itemsPerPage;
-  const currentItems = data?.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(data?.length / itemsPerPage);
-
-  const handlePageClick = (event: { selected: number }) => {
-    const newOffset = (event.selected * itemsPerPage) % data.length;
-    setItemOffset(newOffset);
-  };
   return (
-    <div className="smallScreen">
-      <EventList events={currentItems} withEdit={false} />
-
-      {currentItems && (
-        <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+    <>
+      <Head>
+        <title>Event Management Application</title>
+        <meta
+          name="description"
+          content="Effortlessly manage and organize your events with our comprehensive event management application. Perfect for conferences, workshops, and social gatherings."
+        />
+        <meta
+          name="keywords"
+          content="Event Management, Conferences, Workshops, Social Gatherings, Event Planning, Event Organizer"
+        />
+        <meta name="author" content="EventCo" />
+        <meta property="og:title" content="Event Management Application" />
+        <meta
+          property="og:description"
+          content="Effortlessly manage and organize your events with our comprehensive event management application."
+        />
+        <link rel="canonical" href="http://localhost:3000" />
+      </Head>
+      {events.length > 0 ? (
+        <InfinteScroller events={events} edit={false} limit={limit} />
+      ) : (
+        <div className="flex items-center justify-center h-screen">
+          <h1 className="sm:text-2xl font-bold text-gray-700 m-2">
+            There are no events currently, Stay tuned for future events 🔥
+          </h1>
+        </div>
       )}
-    </div>
+    </>
   );
-}
+};
+
+export const getServerSideProps = (async () => {
+  try {
+    const limit: number = parseInt(process.env.EVENTS_DISPLAYED_LIMIT!);
+    const events = await getEvents(limit);
+    return {
+      props: { events, limit },
+    };
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return {
+      props: { events: [], limit: 0 },
+    };
+  }
+}) satisfies GetServerSideProps<{
+  events: EventData[];
+  limit: number;
+}>;
 
 export default Index;
