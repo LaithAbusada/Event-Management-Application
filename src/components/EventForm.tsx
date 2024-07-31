@@ -91,8 +91,9 @@ function EventForm({ event, withEdit }: EventFormProps) {
           updatedData.image = imageUrl;
         }
 
-        if (isEmpty(updatedData)) {
+        if (!isEmpty(updatedData)) {
           updatedData.id = event.id;
+
           await updateEvent(updatedData);
           showToast(
             TOAST_TYPES.SUCCESS,
@@ -112,20 +113,20 @@ function EventForm({ event, withEdit }: EventFormProps) {
           "A new event has been added successfully!"
         );
       }
-      router.push("/dashboard");
     } catch (error) {
       showToast(
         TOAST_TYPES.ERROR,
         "There was an error processing your request, please try again later"
       );
     }
+    router.push("/dashboard");
     setLoading(false);
   };
 
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section>
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="mb-4 text-3xl font-bold text-white">
           {event ? "Edit Event" : "Add a new event"}
         </h1>
         <Formik
@@ -164,7 +165,7 @@ function EventForm({ event, withEdit }: EventFormProps) {
                 <div className="w-full">
                   <label
                     htmlFor="date"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                   >
                     Date & Time
                   </label>
@@ -172,20 +173,14 @@ function EventForm({ event, withEdit }: EventFormProps) {
                     <DateTimePicker
                       disablePast
                       value={date}
-                      views={[
-                        "year",
-                        "month",
-                        "day",
-                        "hours",
-                        "minutes",
-                        "seconds",
-                      ]}
+                      views={["year", "month", "day", "hours", "minutes"]}
                       slotProps={{
                         textField: {
                           required: true,
                         },
                       }}
                       onChange={(date: Date | null) => setDate(date)}
+                      className="bg-white w-full  rounded-lg focus:ring-primary-600 focus:border-primary-600 "
                     />
                   </LocalizationProvider>
                 </div>
@@ -204,13 +199,13 @@ function EventForm({ event, withEdit }: EventFormProps) {
                 </div>
                 {event && event.image && (
                   <div className="mb-2 w-full">
-                    <span className="block text-gray-700 dark:text-gray-300">
+                    <span className="block text-white">
                       Current Event Image:
                     </span>
                     <img
                       src={event.image}
                       alt="Current Event Image"
-                      className="h-20 w-20 object-cover"
+                      className="h-20 w-20 object-cover bg-white"
                     />
                   </div>
                 )}
@@ -223,15 +218,7 @@ function EventForm({ event, withEdit }: EventFormProps) {
                     label={event ? "Upload New Image" : "Upload Image"}
                   />
                 </div>
-                <div className="w-full">
-                  <label
-                    htmlFor="video"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Video (Optional)
-                  </label>
-                  <input id="video" name="video" type="file" accept="video/*" />
-                </div>
+
                 <div className="sm:col-span-2 flex justify-center mt-10">
                   <SubmitButton
                     loading={loading}
