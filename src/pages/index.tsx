@@ -5,11 +5,18 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { getEvents } from "@/lib/firebase/firestore";
 import { EventData } from "@/interfaces";
 import InfinteScroller from "@/components/InfinteScroller";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { setEvents } from "@/state/events/eventsSlice";
 
 const Index = ({
   events,
   limit,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const dispatch = useDispatch();
+
+  if (events) dispatch(setEvents(events));
+
   useEffect(() => {
     window.history.scrollRestoration = "manual";
   }, []);
@@ -35,7 +42,7 @@ const Index = ({
         <link rel="canonical" href="http://localhost:3000" />
       </Head>
       {events.length > 0 ? (
-        <InfinteScroller events={events} edit={false} limit={limit} />
+        <InfinteScroller edit={false} limit={limit} />
       ) : (
         <div className="flex items-center justify-center h-screen">
           <h1 className="sm:text-2xl font-bold text-gray-700 m-2">

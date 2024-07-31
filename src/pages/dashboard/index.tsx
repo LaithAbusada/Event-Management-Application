@@ -1,34 +1,36 @@
-import { RootState } from "@/state/store";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import EventList from "@/components/EventList";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { EventData } from "@/interfaces";
+import Head from "next/head";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { getEvents } from "@/lib/firebase/firestore";
+import { EventData } from "@/interfaces";
 import InfinteScroller from "@/components/InfinteScroller";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { setEvents } from "@/state/events/eventsSlice";
+import Link from "next/link";
+import SubmitButton from "@/components/SubmitButton";
 
-function Index({
+const Index = ({
   events,
   limit,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const dispatch = useDispatch();
+
+  if (events) dispatch(setEvents(events));
   useEffect(() => {
-    // when user refreshes the page, revert the page scroll back to the top, as sometimes that would cause errors for the infiniteScroller
     window.history.scrollRestoration = "manual";
   }, []);
-  return (
-    <div className="smallScreen">
-      <Link href="/add-event">
-        <button
-          type="button"
-          className="ml-20 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-        >
-          Add Event
-        </button>
-      </Link>
 
+  return (
+    <>
+      <div className="text-center mb-2">
+        <Link href="/add-event">
+          <SubmitButton loading={false} message="Add Event" />
+        </Link>
+      </div>
       {events.length > 0 ? (
-        <InfinteScroller events={events} edit={true} limit={limit} />
+        <InfinteScroller edit={true} limit={limit} />
       ) : (
         <div className="flex items-center justify-center h-screen">
           <h1 className="sm:text-2xl font-bold text-gray-700 m-2">
@@ -36,9 +38,9 @@ function Index({
           </h1>
         </div>
       )}
-    </div>
+    </>
   );
-}
+};
 
 export const getServerSideProps = (async () => {
   try {
@@ -57,4 +59,5 @@ export const getServerSideProps = (async () => {
   events: EventData[];
   limit: number;
 }>;
+
 export default Index;

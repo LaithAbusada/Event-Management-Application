@@ -1,12 +1,12 @@
-import { AttendeeListProps } from "@/interfaces/propsInterfaces";
+import { AttendeeListProps } from "@/interfaces";
 import React from "react";
 
 function AttendeeList({ attendees }: AttendeeListProps) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       {attendees.length > 0 ? (
-        <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="min-w-full text-sm text-left text-gray-50">
+          <thead className="text-xs text-white uppercase  ">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Name
@@ -23,14 +23,11 @@ function AttendeeList({ attendees }: AttendeeListProps) {
             </tr>
           </thead>
           <tbody>
-            {attendees.map((attendee) => (
-              <tr
-                key={attendee?.id}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
+            {attendees?.map((attendee) => (
+              <tr key={attendee?.id} className=" border-b hover:bg-slate-700">
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-white whitespace-nowrap"
                 >
                   {attendee?.name}
                 </th>
@@ -42,7 +39,7 @@ function AttendeeList({ attendees }: AttendeeListProps) {
           </tbody>
         </table>
       ) : (
-        <div className="text-center py-6 text-gray-500 dark:text-gray-400">
+        <div className="text-center py-6 text-gray-500">
           No attendees to display.
         </div>
       )}

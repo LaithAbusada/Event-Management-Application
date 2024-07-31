@@ -13,6 +13,9 @@ export function formatDate(timestamp: Timestamp) {
 
 export function getTime(timestamp: Timestamp) {
   const date = timestamp?.toDate();
-
-  return date?.toLocaleTimeString();
+  const options: Intl.DateTimeFormatOptions = {
+    hour: "numeric",
+    minute: "numeric",
+  };
+  return date?.toLocaleTimeString("en-US", options);
 }
