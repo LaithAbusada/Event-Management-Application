@@ -41,7 +41,7 @@ function RegisterForm(props: RegisterFormProps) {
       await addAttendee(data);
       showToast(TOAST_TYPES.SUCCESS, "You have registered successfully!");
     } catch (error) {
-      log.error("An error has occured with registration");
+      console.log("An error has occured with registration", error);
       showToast(
         TOAST_TYPES.ERROR,
         "There was an error with your registration, please try again later"
@@ -52,7 +52,7 @@ function RegisterForm(props: RegisterFormProps) {
   };
 
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section className="">
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <Formik
           initialValues={initialValues}
@@ -61,7 +61,7 @@ function RegisterForm(props: RegisterFormProps) {
         >
           {({ errors, touched }) => (
             <Form>
-              <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 sm:gap-6">
                 <div className="sm:col-span-2">
                   <FormField
                     type="text"
@@ -113,7 +113,7 @@ function RegisterForm(props: RegisterFormProps) {
                     <div className="text-red-600">{errors.gender}</div>
                   ) : null}
                 </div>
-                <div className="sm:col-span-2 flex justify-center mt-10">
+                <div className="sm:col-span-2 flex justify-center mt-10 ">
                   <SubmitButton loading={loading} message="Register Now" />
                 </div>
               </div>
