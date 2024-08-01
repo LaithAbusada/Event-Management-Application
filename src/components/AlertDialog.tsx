@@ -45,8 +45,10 @@ export default function AlertDialog({ id }: AlertProps) {
         TOAST_TYPES.ERROR,
         "There was an error deleting your event, please try again later"
       );
+    } finally {
+      setLoading(false);
+      setOpen(false);
     }
-    setOpen(false);
   }
 
   return (

@@ -6,7 +6,7 @@ function AttendeeList({ attendees }: AttendeeListProps) {
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       {attendees.length > 0 ? (
         <table className="min-w-full text-sm text-left text-gray-50">
-          <thead className="text-xs text-white uppercase  ">
+          <thead className="text-xs text-white uppercase">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Name
