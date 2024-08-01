@@ -18,19 +18,22 @@ import Image from "next/image";
 function EventCard(props: EventProps) {
   const router = useRouter();
   const { event } = props;
-  console.log("Testing + ", event);
-  console.log(event?.image);
   function handleClick() {
     router.push(`/register/${event?.id}`);
   }
   return (
-    <article className="mx-auto max-w-sm shadow-xl bg-cover bg-center min-h-[500px] transform duration-500 hover:-translate-y-2 group md:min-w-[500px]">
-      <Image src={event.image} alt={event.name} layout="fill" />
+    <article className="mx-auto max-w-sm shadow-2xl  bg-cover bg-center min-h-[500px] transform duration-500 hover:-translate-y-2 group md:min-w-[500px]">
+      <Image
+        src={event.image}
+        alt={event.name}
+        title={event.name}
+        layout="fill"
+      />
       <div className="bg-black  bg-opacity-20 min-h- px-10 flex flex-wrap flex-col pt-60 hover:bg-opacity-75 transform duration-300">
         <h2 className="text-white text-3xl mb-5 transform translate-y-10 group-hover:-translate-y-40 duration-300">
           {event.name}
         </h2>
-        <div className="w-16 h-2 bg-yellow-500 rounded-full mb-5 transform translate-y-10 group-hover:-translate-y-40 duration-300"></div>
+        <div className="w-16 h-2 bg-purple rounded-full mb-5 transform translate-y-10 group-hover:-translate-y-40 duration-300"></div>
 
         <div className="mb-5 h-30 min-h-full overflow-hidden opacity-0 text-white text-xl group-hover:opacity-80 transform duration-500 group-hover:-translate-y-40 ">
           <p>{event.description}</p>
@@ -45,7 +48,7 @@ function EventCard(props: EventProps) {
           <AccessTimeIcon /> Time: {event.time}
         </p>
         <button
-          className="m-10 opacity-0 text-black bg-yellow-500 px-4 py-2 mt-4 rounded group-hover:opacity-100 transform duration-500"
+          className="m-10 opacity-0 text-black bg-purple px-4 py-2 mt-4 rounded group-hover:opacity-100 transform duration-500"
           onClick={handleClick}
         >
           Register Now

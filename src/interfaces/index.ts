@@ -33,7 +33,7 @@ export interface editEvent {
   description: string;
 }
 export interface EventState {
-  data: Event[] | null;
+  data: EventData[] | null;
 }
 
 export interface RegisterFormValues {
@@ -41,6 +41,17 @@ export interface RegisterFormValues {
   gender: string;
   phone: string;
   email: string;
+}
+export interface FormFieldProps {
+  type?: string;
+  id: string;
+  name: string;
+  placeholder?: string;
+  rows?: number;
+  as?: string;
+  label?: string;
+  required?: boolean;
+  FormChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 // component props Interfaces
@@ -84,7 +95,6 @@ export interface ButtonProps {
 }
 
 export interface EventListProps {
-  events: EventData[];
   withEdit: boolean;
 }
 
@@ -101,7 +111,6 @@ export interface FormFieldProps {
 }
 
 export interface InfiniteScrollerProps {
-  events: EventData[];
   edit: boolean;
   limit: number;
 }

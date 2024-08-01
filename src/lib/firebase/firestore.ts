@@ -1,4 +1,4 @@
-import { Attendee, Event, EventData, editEvent } from "@/interfaces";
+import { Attendee, Event, EventData } from "@/interfaces";
 import { db } from "@/lib/firebase/clientApp";
 import { formatDate, getTime } from "@/utils/formatDate";
 import {
@@ -89,6 +89,7 @@ export async function getEventById(eventID: string) {
       ...data,
       date: formattedDate,
       time: time,
+      id: event.id,
     } as EventData;
   } else {
     throw new Error("Event not found");
@@ -110,6 +111,7 @@ export async function getEditEvent(eventID: string) {
     return {
       ...data,
       date: data.date.toDate().toString(),
+      id: event.id,
     } as EventData;
   } else {
     throw new Error("Event not found");
