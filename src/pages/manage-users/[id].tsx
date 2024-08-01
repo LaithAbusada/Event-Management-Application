@@ -9,8 +9,8 @@ function ManageUsers({
   eventName,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <h1 className="text-4xl font-bold text-center text-indigo-600 mb-8">
+    <div className="min-h-screen py-8 px-4">
+      <h1 className="text-4xl font-bold text-center text-white mb-8">
         {eventName ? eventName : "There was an error fetching this event data"}
       </h1>
       {attendees ? (
