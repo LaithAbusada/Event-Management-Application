@@ -9,12 +9,19 @@ import { IconButton, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import { deleteById } from "@/lib/firebase/firestore";
-import { toast } from "react-toastify";
-import { AlertProps } from "@/interfaces/propsInterfaces";
+import { AlertProps } from "@/interfaces";
+import { TOAST_TYPES } from "@/constants/toastEnums";
+import { showToast } from "@/helpers/toast";
+import Loading from "../../public/icons/Loading.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { setEvents } from "@/state/events/eventsSlice";
 
-export default function AlertDialog(props: AlertProps) {
+export default function AlertDialog({ id }: AlertProps) {
   const [open, setOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const events = useSelector((state: RootState) => state.events.data);
+  const dispatch = useDispatch();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -24,40 +31,34 @@ export default function AlertDialog(props: AlertProps) {
   };
 
   async function handleAgree() {
+    setLoading(true);
     try {
-      await deleteById(props.id);
-      toast.success("Event Deleted Successfully! ", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
+      await deleteById(id);
+      const newEvents = events?.filter((item) => item.id != id);
+      dispatch(setEvents(newEvents));
+      setLoading(false);
+
+      showToast(TOAST_TYPES.SUCCESS, "Event Deleted Successfully! ");
     } catch (e) {
       console.log(e);
-      toast.error(
-        "There was an error deleting your event, please try again later",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-        }
+      showToast(
+        TOAST_TYPES.ERROR,
+        "There was an error deleting your event, please try again later"
       );
+    } finally {
+      setLoading(false);
+      setOpen(false);
     }
-    setOpen(false);
   }
 
   return (
     <React.Fragment>
       <Tooltip title="Delete">
         <IconButton onClick={handleClickOpen}>
-          <DeleteIcon className="text-red-500" fontSize="large" />
+          <DeleteIcon
+            className="text-red-500 hover:text-red-900"
+            fontSize="large"
+          />
         </IconButton>
       </Tooltip>
       <Dialog
@@ -67,7 +68,7 @@ export default function AlertDialog(props: AlertProps) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete this event?"}
+          Are you sure you want to delete this event?
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -76,12 +77,21 @@ export default function AlertDialog(props: AlertProps) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAgree} style={{ color: "red" }}>
-            Delete
-          </Button>
-          <Button onClick={handleClose} autoFocus>
-            Cancel
-          </Button>
+          {loading ? (
+            <h2>
+              Please wait{" "}
+              <Loading className="inline mr-2 w-4 h-4 text-gray-200 animate-spin " />
+            </h2>
+          ) : (
+            <>
+              <Button onClick={handleAgree} style={{ color: "red" }}>
+                Delete
+              </Button>
+              <Button onClick={handleClose} autoFocus>
+                Cancel
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </React.Fragment>

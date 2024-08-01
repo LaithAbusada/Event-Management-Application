@@ -5,6 +5,7 @@ import RegisterForm from "@/components/RegisterForm";
 import { EventData } from "@/interfaces";
 import { getEventById } from "@/lib/firebase/firestore";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import Head from "next/head";
 
 function Register({
   event,
@@ -13,14 +14,31 @@ function Register({
     return <p>Error fetching event</p>;
   }
   return (
-    <div className="flex flex-col sm:flex-row justify-center mt-20">
-      <div className="flex-1  p-4">
-        <EventCard event={event} />
+    <>
+      <Head>
+        <title>{event.name}</title>
+        <meta name="description" content={event.description} />
+        <meta
+          name="keywords"
+          content="Event Management, Conferences, Workshops, Social Gatherings, Event Planning, Event Organizer"
+        />
+        <meta name="author" content="EventCo" />
+        <meta property="og:title" content={event.name} />
+        <meta property="og:description" content={event.description} />
+        <link
+          rel="canonical"
+          href={`http://localhost:3000/register/${event.id}`}
+        />
+      </Head>
+      <div className="grid sm:grid-cols-2 grid-cols-1">
+        <div className=" p-4">
+          <EventCard event={event} />
+        </div>
+        <div className="p-4">
+          <RegisterForm id={event.id} />
+        </div>
       </div>
-      <div className="flex-1 p-4">
-        <RegisterForm id={event.id} />
-      </div>
-    </div>
+    </>
   );
 }
 
