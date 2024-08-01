@@ -1,4 +1,6 @@
+
 import { EventState } from "@/interfaces";
+
 import { createSlice } from "@reduxjs/toolkit";
 import { getEvents } from "@/lib/firebase/firestore";
 
