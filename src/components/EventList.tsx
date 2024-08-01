@@ -20,7 +20,7 @@ function EventList({ withEdit }: EventListProps) {
   };
   if (!events?.length) return null;
   return (
-    <section className="grid lg:grid-cols-2 min-[1440px]:grid-cols-3 min-[1900px]:grid-cols-4 grid-cols-1 gap-16 m-4">
+    <section className="grid lg:grid-cols-2 min-[1460px]:grid-cols-3 min-[2000px]:grid-cols-4 grid-cols-1 gap-16 m-4">
       {events.map((event) => (
         <div key={event.id} className="flex flex-col items-center">
           <EventCard event={event} />
