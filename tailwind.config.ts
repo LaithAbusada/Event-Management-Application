@@ -9,11 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        white: "#EFEFF1",
-        purple: "#BF94FF",
-        black: "#18181B",
-        purply: "#5d13cb",
-        grey: "#A2A2AC",
+        skyblue: "#4A90E2",
+
+        white: "#FFFFFF",
+
+        darkgray: "#333333",
+        darkpurple: "#0d0733",
+        purple: " #5812c3",
       },
     },
   },

@@ -14,7 +14,7 @@ function InfiniteScroller({ edit, limit }: InfiniteScrollerProps) {
   return (
     <>
       {loading ? (
-        <div className="flex justify-center items-center h-screen text-white">
+        <div className="flex justify-center items-center h-screen text-darkgray">
           <h2 className="text-center">Loading initial events...</h2>
           <Loading className="inline mr-2 w-4 h-4 text-gray-200 animate-spin" />
         </div>

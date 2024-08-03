@@ -54,10 +54,14 @@ function EventForm({ event, withEdit }: EventFormProps) {
     }
   };
 
+  const dateChange = (newDate: Date | null) => {
+    setDate(newDate);
+  };
   const handleSubmit = async (
     values: MyFormValues,
     actions: FormikHelpers<MyFormValues>
   ) => {
+    console.log("date", date);
     actions.setSubmitting(false);
     setLoading(true);
     try {
@@ -83,7 +87,9 @@ function EventForm({ event, withEdit }: EventFormProps) {
           updatedData.description = values.description;
         }
 
-        if (date?.getMilliseconds() != d.getMilliseconds()) {
+        console.log("date", date, d);
+        console.log("date", date?.getMilliseconds(), d.getMilliseconds());
+        if (date?.getTime() != d.getTime()) {
           updatedData.date = myTimestamp;
         }
 
@@ -126,7 +132,7 @@ function EventForm({ event, withEdit }: EventFormProps) {
   return (
     <section>
       <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h1 className="mb-4 text-3xl font-bold text-white">
+        <h1 className="mb-4 text-3xl font-bold text-darkgray">
           {event ? "Edit Event" : "Add a new event"}
         </h1>
         <Formik
@@ -165,7 +171,7 @@ function EventForm({ event, withEdit }: EventFormProps) {
                 <div className="w-full">
                   <label
                     htmlFor="date"
-                    className="block mb-2 text-sm font-medium text-gray-900"
+                    className="block mb-2 text-sm font-medium text-darkgray"
                   >
                     Date & Time
                   </label>
@@ -179,7 +185,7 @@ function EventForm({ event, withEdit }: EventFormProps) {
                           required: true,
                         },
                       }}
-                      onChange={(date: Date | null) => setDate(date)}
+                      onChange={dateChange}
                       className="bg-white w-full  rounded-lg focus:ring-primary-600 focus:border-primary-600 "
                     />
                   </LocalizationProvider>
@@ -199,7 +205,7 @@ function EventForm({ event, withEdit }: EventFormProps) {
                 </div>
                 {event && event.image && (
                   <div className="mb-2 w-full">
-                    <span className="block text-white">
+                    <span className="block text-darkgray">
                       Current Event Image:
                     </span>
                     <img
@@ -216,6 +222,7 @@ function EventForm({ event, withEdit }: EventFormProps) {
                     type="file"
                     FormChange={handleChange}
                     label={event ? "Upload New Image" : "Upload Image"}
+                    accept="image/*"
                   />
                 </div>
 

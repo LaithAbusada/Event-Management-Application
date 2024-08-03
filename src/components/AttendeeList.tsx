@@ -5,8 +5,8 @@ function AttendeeList({ attendees }: AttendeeListProps) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       {attendees.length > 0 ? (
-        <table className="min-w-full text-sm text-left text-gray-50">
-          <thead className="text-xs text-white uppercase">
+        <table className="min-w-full text-md text-left text-darkgray">
+          <thead className="text-xs uppercase">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Name
@@ -24,10 +24,10 @@ function AttendeeList({ attendees }: AttendeeListProps) {
           </thead>
           <tbody>
             {attendees?.map((attendee) => (
-              <tr key={attendee?.id} className=" border-b hover:bg-slate-700">
+              <tr key={attendee?.id} className=" border-b hover:bg-violet-100">
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-white whitespace-nowrap"
+                  className="px-6 py-4 font-medium  whitespace-nowrap"
                 >
                   {attendee?.name}
                 </th>

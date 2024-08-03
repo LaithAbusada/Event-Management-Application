@@ -29,7 +29,7 @@ function EventList({ withEdit }: EventListProps) {
               <Tooltip title="Edit">
                 <IconButton onClick={() => handleClick(event.id)}>
                   <EditIcon
-                    className="text-white hover:text-blue-500"
+                    className="text-skyblue hover:text-blue-600"
                     fontSize="large"
                   />
                 </IconButton>
@@ -37,7 +37,7 @@ function EventList({ withEdit }: EventListProps) {
               <Tooltip title="Manage Users">
                 <IconButton onClick={() => manageUsers(event.id)}>
                   <PeopleIcon
-                    className="text-white hover:text-blue-500"
+                    className="text-skyblue hover:text-blue-600"
                     fontSize="large"
                   />
                 </IconButton>
