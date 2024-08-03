@@ -48,7 +48,7 @@ function EventCard(props: EventProps) {
           <AccessTimeIcon /> Time: {event.time}
         </p>
         <button
-          className="m-10 opacity-0 text-black bg-purple px-4 py-2 mt-4 rounded group-hover:opacity-100 transform duration-500"
+          className="m-10 opacity-0 text-white hover:bg-purple hover:shadow-lg bg-darkpurple  px-4 py-2 mt-4 rounded group-hover:opacity-100 transform duration-500"
           onClick={handleClick}
         >
           Register Now

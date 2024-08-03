@@ -14,12 +14,13 @@ function FormField({
   FormChange,
   required,
   children,
+  accept,
 }: PropsWithChildren<FormFieldProps>) {
   return (
     <>
       <label
         htmlFor={name}
-        className="block mb-2 text-sm font-medium text-white"
+        className="block mb-2 text-sm font-medium text-darkgray"
       >
         {label}
       </label>
@@ -33,6 +34,7 @@ function FormField({
         as={as}
         required={required}
         {...(FormChange ? { onChange: FormChange } : {})}
+        accept={accept}
       >
         {children}
       </Field>

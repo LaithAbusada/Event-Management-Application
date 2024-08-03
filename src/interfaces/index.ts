@@ -52,6 +52,7 @@ export interface FormFieldProps {
   label?: string;
   required?: boolean;
   FormChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  accept?: string;
 }
 
 // component props Interfaces

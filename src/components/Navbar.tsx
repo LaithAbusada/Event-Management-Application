@@ -73,16 +73,6 @@ export default function DrawerAppBar(props: Props) {
     }
   }, [user, dispatch]);
 
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 100) {
-        setColor("#5d13cb");
-      } else {
-        setColor("transparent");
-      }
-    });
-  }, []);
-
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -113,13 +103,7 @@ export default function DrawerAppBar(props: Props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        component="nav"
-        sx={{
-          bgcolor: color,
-        }}
-        elevation={0}
-      >
+      <AppBar className="appbar" component="nav" elevation={0}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -133,7 +117,7 @@ export default function DrawerAppBar(props: Props) {
           <Typography
             variant="h1"
             component="div"
-            className="text-white text-lg lg:text-4xl"
+            className="text-darkgray text-lg lg:text-4xl"
             sx={{
               flexGrow: 1,
               display: { xs: "none", sm: "block" },
@@ -143,10 +127,10 @@ export default function DrawerAppBar(props: Props) {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Link href={item.path} passHref key={item.name}>
+              <Link href={item.path} passHref key={item.name} prefetch={false}>
                 <Button
                   sx={{ mr: 8, color: "#fff" }}
-                  className="text-sm lg:text-l hover:text-blue-500"
+                  className="text-sm lg:text-l hover:text-purple"
                 >
                   {item.name}
                 </Button>
