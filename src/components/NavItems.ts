@@ -1,7 +1,6 @@
 export const initialNavItems = [
   { name: "Home", path: "/" },
   { name: "Admin Login", path: "/api/auth/login" },
-  { name: "Contact", path: "/contact" },
 ];
 //when no admin logged in, regular user(no admin)
 export const adminNavItems = [
