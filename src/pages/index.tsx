@@ -39,7 +39,10 @@ const Index = ({
           property="og:description"
           content="Effortlessly manage and organize your events with our comprehensive event management application."
         />
-        <link rel="canonical" href="http://localhost:3000" />
+        <link
+          rel="canonical"
+          href="https://event-management-application-theta.vercel.app"
+        />
       </Head>
       {events.length > 0 ? (
         <InfinteScroller edit={false} limit={limit} />
