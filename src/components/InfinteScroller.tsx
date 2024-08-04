@@ -24,7 +24,7 @@ function InfiniteScroller({ edit, limit }: InfiniteScrollerProps) {
           next={() => fetchMoreData(limit)}
           hasMore={hasMore}
           loader={
-            <h4 className="text-center text-white mt-5 mb-5 sm:text-xl">
+            <h4 className="text-center text-darkgray mt-5 mb-5 sm:text-xl">
               Loading more events...
               <Loading className="inline mr-2 w-6 h-6 text-gray-200 animate-spin" />
             </h4>

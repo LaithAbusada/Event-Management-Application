@@ -27,7 +27,7 @@ function Register({
         <meta property="og:description" content={event.description} />
         <link
           rel="canonical"
-          href={`http://localhost:3000/register/${event.id}`}
+          href={`https://event-management-application-theta.vercel.app/register/${event.id}`}
         />
       </Head>
       <div className="grid sm:grid-cols-2 grid-cols-1">

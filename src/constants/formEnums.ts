@@ -2,7 +2,7 @@ export const ValidationMessages = {
   NAME_SHORT:
     "Event name is too short! It should be at least 2 characters long.",
   NAME_LONG: "Event name is too long! It should be at most 50 characters long.",
-  NAME_REQUIRED: "Event name is required.",
+  NAME_REQUIRED: "Name is required.",
   LOCATION_SHORT:
     "Event location is too short! It should be at least 4 characters long.",
   LOCATION_LONG:
