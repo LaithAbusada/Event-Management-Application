@@ -22,7 +22,7 @@ function InfiniteScroller({ edit, limit }: InfiniteScrollerProps) {
         <InfiniteScroll
           dataLength={events ? events.length : 0}
           next={() => fetchMoreData(limit)}
-          hasMore={hasMore}
+          hasMore={events && events.length % limit == 0 ? hasMore : false}
           loader={
             <h4 className="text-center text-darkgray mt-5 mb-5 sm:text-xl">
               Loading more events...
