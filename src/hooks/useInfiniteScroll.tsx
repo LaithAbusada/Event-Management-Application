@@ -37,8 +37,11 @@ function useInfiniteScroll() {
   }
 
   async function fetchMoreData(limit: number) {
-    console.log(loading, lastVisible, hasMore);
-    if (loading || !lastVisible) return;
+    console.log("laith", lastVisible, loading);
+    if (loading || !lastVisible) {
+      setHasMore(false);
+      return;
+    }
 
     const { events: nextEvents, lastDoc } = await getNextEvents(
       lastVisible,
